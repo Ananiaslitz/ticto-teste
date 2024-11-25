@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php-app
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8000:8000"
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql-db
+    restart: always
+    platform: "linux/amd64"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  composer:
+    image: composer:latest
+    container_name: composer
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    entrypoint: ["composer"]
+
+volumes:
+  mysql-data:
