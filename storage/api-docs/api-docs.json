@@ -1,0 +1,76 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de Registro de Pontos",
+        "description": "API para gerenciar pontos dos funcionários",
+        "contact": {
+            "email": "diegohsananias@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/points": {
+            "post": {
+                "tags": [
+                    "Points"
+                ],
+                "summary": "Registrar um ponto",
+                "description": "Registrar um ponto para o funcionário autenticado",
+                "operationId": "registerPoint",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "datetime": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2024-11-26T10:30:00Z"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ponto registrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "datetime": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-11-26T10:30:00Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Points",
+            "description": "Points"
+        }
+    ]
+}
