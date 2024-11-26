@@ -19,7 +19,7 @@
                     "Points"
                 ],
                 "summary": "Registrar um ponto",
-                "description": "Registrar um ponto para o funcionário autenticado",
+                "description": "Registrar um ponto com localização do funcionário",
                 "operationId": "registerPoint",
                 "requestBody": {
                     "required": true,
@@ -31,6 +31,16 @@
                                         "type": "string",
                                         "format": "date-time",
                                         "example": "2024-11-26T10:30:00Z"
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "-23.550520"
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "-46.633308"
                                     }
                                 },
                                 "type": "object"
@@ -53,6 +63,16 @@
                                             "type": "string",
                                             "format": "date-time",
                                             "example": "2024-11-26T10:30:00Z"
+                                        },
+                                        "latitude": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": "-23.550520"
+                                        },
+                                        "longitude": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": "-46.633308"
                                         }
                                     },
                                     "type": "object"
