@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  php:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,14 +9,24 @@ services:
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html
+    expose:
+      - "9000"
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
     ports:
-      - "8000:8000"
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - ./.docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
 
   mysql:
-    image: mysql:latest
+    image: mysql:8.0
     container_name: mysql-db
     restart: always
-    platform: "linux/amd64"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: laravel
