@@ -2,6 +2,7 @@
 
 namespace Core\Infrastructure\Adapters\Http\Controllers;
 
+use Core\Application\Commands\RegisterPointCommand;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
