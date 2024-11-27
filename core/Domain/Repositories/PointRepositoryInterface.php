@@ -7,6 +7,7 @@ use Core\Domain\Entities\PointEntity;
 interface PointRepositoryInterface extends BaseRepositoryInterface
 {
     public function save(PointEntity $point): PointEntity;
+    public function findLastPointByUser(int $userId): ?PointEntity;
 
     public function findById(int $id): ?PointEntity;
 

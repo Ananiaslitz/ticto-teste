@@ -28,6 +28,20 @@ class PointRepository extends EloquentBaseRepository implements PointRepositoryI
         return $this->mapToEntity($model);
     }
 
+    public function findLastPointByUser(int $userId): ?PointEntity
+    {
+        $model = $this->model
+            ->where('user_id', $userId)
+            ->orderBy('registered_at', 'desc')
+            ->first();
+
+        if (!$model) {
+            return null;
+        }
+
+        return $this->mapToEntity($model);
+    }
+
     public function findById(int $id): ?PointEntity
     {
         $model = Point::find($id);

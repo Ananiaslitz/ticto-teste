@@ -19,6 +19,13 @@ class RegisterPointHandler
             longitude: $command->longitude
         );
 
+        $lastPoint = $this->pointRepository->findLastPointByUser($command->userId);
+
+        if ($lastPoint) {
+            $point->validadeDeduplication($lastPoint);
+        }
+
+
         return $this->pointRepository->save($point);
     }
 }

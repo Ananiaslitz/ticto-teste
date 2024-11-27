@@ -61,4 +61,14 @@ class PointEntity implements \JsonSerializable
             'longitude' => $this->longitude
         ];
     }
+
+    public function validadeDeduplication(PointEntity $lastPoint): void
+    {
+        if (
+            $this->userId === $lastPoint->getUserId() &&
+            abs($this->registeredAt->getTimestamp() - $lastPoint->getRegisteredAt()->getTimestamp()) < 600
+        ) {
+            throw new \DomainException('O ponto não pode ser registrado duas vezes dentro de 10 minutos.');
+        }
+    }
 }
