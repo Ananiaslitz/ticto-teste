@@ -2,15 +2,19 @@
 
 namespace Core\Infrastructure\Adapters\Http\Controllers;
 
+use Core\Application\Bus\SimpleCommandBus;
 use Core\Application\Commands\RegisterPointCommand;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
 class PointController extends BaseController
 {
-    private CommandBus $commandBus;
+    use ValidatesRequests;
 
-    public function __construct(CommandBus $commandBus)
+    private SimpleCommandBus $commandBus;
+
+    public function __construct(SimpleCommandBus $commandBus)
     {
         $this->commandBus = $commandBus;
     }
