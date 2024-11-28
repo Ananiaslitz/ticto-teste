@@ -13,5 +13,13 @@ interface PointRepositoryInterface extends BaseRepositoryInterface
 
     public function findByUserIdAndDate(int $userId, string $date): array;
 
+    public function findPointsWithFilters(?\DateTimeImmutable $startDate, ?\DateTimeImmutable $endDate): array;
+
+    public function findByFilters(
+        int $userId,
+        ?\DateTimeImmutable $startDate = null,
+        ?\DateTimeImmutable $endDate = null
+    ): \Illuminate\Support\Collection;
+
     public function delete(int $id): bool;
 }

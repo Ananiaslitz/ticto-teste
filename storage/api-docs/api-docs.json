@@ -13,7 +13,444 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/employees/{id}": {
+            "put": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Atualizar um funcionário",
+                "description": "Atualiza os dados de um funcionário existente com base no ID.",
+                "operationId": "updateEmployee",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do funcionário a ser atualizado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Carlos Silva"
+                                    },
+                                    "cpf": {
+                                        "type": "string",
+                                        "maxLength": 14,
+                                        "example": "123.456.789-09"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "carlos.silva@example.com"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "enum": [
+                                            "employee"
+                                        ],
+                                        "example": "employee"
+                                    },
+                                    "birth_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "1990-05-20"
+                                    },
+                                    "address": {
+                                        "properties": {
+                                            "cep": {
+                                                "type": "string",
+                                                "maxLength": 9,
+                                                "example": "01001-000"
+                                            },
+                                            "street": {
+                                                "type": "string",
+                                                "maxLength": 255,
+                                                "example": "Rua Exemplo"
+                                            },
+                                            "number": {
+                                                "type": "integer",
+                                                "example": 123
+                                            },
+                                            "city": {
+                                                "type": "string",
+                                                "maxLength": 255,
+                                                "example": "Cidade Exemplo"
+                                            },
+                                            "state": {
+                                                "type": "string",
+                                                "maxLength": 255,
+                                                "example": "Estado Exemplo"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Funcionário atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Funcionário atualizado com sucesso"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos"
+                    },
+                    "404": {
+                        "description": "Funcionário não encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Remover um funcionário",
+                "description": "Remove um funcionário do sistema com base no ID.",
+                "operationId": "deleteEmployee",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do funcionário a ser removido",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Funcionário removido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Funcionário removido com sucesso"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Funcionário não encontrado"
+                    }
+                }
+            }
+        },
+        "/employees": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Listar funcionários",
+                "description": "Lista os funcionários cadastrados no sistema com filtros opcionais.",
+                "operationId": "listEmployees",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Filtrar por nome do funcionário",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Carlos Silva"
+                        }
+                    },
+                    {
+                        "name": "cpf",
+                        "in": "query",
+                        "description": "Filtrar por CPF do funcionário",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "123.456.789-09"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Filtrar por e-mail do funcionário",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "example": "carlos.silva@example.com"
+                        }
+                    },
+                    {
+                        "name": "birth_date",
+                        "in": "query",
+                        "description": "Filtrar por data de nascimento do funcionário",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "1990-05-20"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de funcionários",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Carlos Silva"
+                                            },
+                                            "cpf": {
+                                                "type": "string",
+                                                "example": "123.456.789-09"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "example": "carlos.silva@example.com"
+                                            },
+                                            "role": {
+                                                "type": "string",
+                                                "example": "employee"
+                                            },
+                                            "birth_date": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "example": "1990-05-20"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Cadastrar um funcionário",
+                "description": "Cadastra um novo funcionário no sistema.",
+                "operationId": "createEmployee",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Carlos Silva"
+                                    },
+                                    "cpf": {
+                                        "type": "string",
+                                        "maxLength": 14,
+                                        "example": "123.456.789-09"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "carlos.silva@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "senha123"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "enum": [
+                                            "employee"
+                                        ],
+                                        "example": "employee"
+                                    },
+                                    "birth_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "1990-05-20"
+                                    },
+                                    "address": {
+                                        "properties": {
+                                            "cep": {
+                                                "type": "string",
+                                                "maxLength": 9,
+                                                "example": "01001-000"
+                                            },
+                                            "street": {
+                                                "type": "string",
+                                                "maxLength": 255,
+                                                "example": "Rua Exemplo"
+                                            },
+                                            "number": {
+                                                "type": "integer",
+                                                "example": 123
+                                            },
+                                            "city": {
+                                                "type": "string",
+                                                "maxLength": 255,
+                                                "example": "Cidade Exemplo"
+                                            },
+                                            "state": {
+                                                "type": "string",
+                                                "maxLength": 255,
+                                                "example": "Estado Exemplo"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Funcionário cadastrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Funcionário cadastrado com sucesso"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos"
+                    },
+                    "409": {
+                        "description": "CPF ou e-mail já está em uso"
+                    }
+                }
+            }
+        },
         "/points": {
+            "get": {
+                "tags": [
+                    "Points"
+                ],
+                "summary": "Listar pontos",
+                "description": "Listar os pontos do usuário autenticado ou de um subordinado (se for administrador).",
+                "operationId": "listPoints",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "ID do usuário para filtrar pontos (somente para administradores)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "description": "Data inicial do filtro",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2024-11-01"
+                        }
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "description": "Data final do filtro",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2024-11-30"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de pontos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "datetime": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2024-11-26T10:30:00Z"
+                                            },
+                                            "latitude": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": "-23.550520"
+                                            },
+                                            "longitude": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": "-46.633308"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos"
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Points"
@@ -85,12 +522,429 @@
                     }
                 }
             }
+        },
+        "/points/{id}": {
+            "put": {
+                "tags": [
+                    "Points"
+                ],
+                "summary": "Atualizar um ponto existente",
+                "description": "Atualizar um ponto existente com base no ID.",
+                "operationId": "updatePoint",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do ponto a ser atualizado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "datetime": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2024-11-26T10:30:00Z"
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "-23.550520"
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "-46.633308"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ponto atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "datetime": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-11-26T10:30:00Z"
+                                        },
+                                        "latitude": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": "-23.550520"
+                                        },
+                                        "longitude": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": "-46.633308"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Points"
+                ],
+                "summary": "Remover um ponto",
+                "description": "Remover um ponto existente com base no ID.",
+                "operationId": "deletePoint",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do ponto a ser removido",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Ponto removido com sucesso"
+                    },
+                    "404": {
+                        "description": "Ponto não encontrado"
+                    }
+                }
+            }
+        },
+        "/points/report": {
+            "get": {
+                "tags": [
+                    "Points"
+                ],
+                "summary": "Relatório de pontos dos funcionários",
+                "description": "Relatório detalhado de pontos registrados, com filtros opcionais por data.",
+                "operationId": "pointsReport",
+                "parameters": [
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "description": "Data inicial do filtro",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2024-11-01"
+                        }
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "description": "Data final do filtro",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2024-11-30"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Relatório de pontos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "point_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "employee_name": {
+                                                "type": "string",
+                                                "example": "Carlos Silva"
+                                            },
+                                            "employee_role": {
+                                                "type": "string",
+                                                "example": "employee"
+                                            },
+                                            "employee_age": {
+                                                "type": "integer",
+                                                "example": 34
+                                            },
+                                            "manager_name": {
+                                                "type": "string",
+                                                "example": "João Gerente"
+                                            },
+                                            "point_date": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2024-11-10T08:30:00Z"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Cadastrar um novo usuário",
+                "description": "Cadastrar um novo usuário (admin, funcionário ou cliente).",
+                "operationId": "createUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Carlos Silva"
+                                    },
+                                    "cpf": {
+                                        "type": "string",
+                                        "maxLength": 14,
+                                        "example": "123.456.789-09"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "carlos.silva@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "minLength": 8,
+                                        "example": "senha123"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "enum": [
+                                            "admin",
+                                            "user",
+                                            "employee"
+                                        ],
+                                        "example": "employee"
+                                    },
+                                    "birthDate": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "1990-05-20"
+                                    },
+                                    "cep": {
+                                        "type": "string",
+                                        "maxLength": 9,
+                                        "example": "01001-000"
+                                    },
+                                    "address": {
+                                        "properties": {
+                                            "street": {
+                                                "type": "string",
+                                                "maxLength": 255,
+                                                "example": "Rua Exemplo"
+                                            },
+                                            "city": {
+                                                "type": "string",
+                                                "maxLength": 255,
+                                                "example": "Cidade Exemplo"
+                                            },
+                                            "state": {
+                                                "type": "string",
+                                                "maxLength": 255,
+                                                "example": "Estado Exemplo"
+                                            },
+                                            "number": {
+                                                "type": "integer",
+                                                "example": 123
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Carlos Silva"
+                                        },
+                                        "cpf": {
+                                            "type": "string",
+                                            "example": "123.456.789-09"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "carlos.silva@example.com"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "example": "employee"
+                                        },
+                                        "birthDate": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "1990-05-20"
+                                        },
+                                        "address": {
+                                            "properties": {
+                                                "cep": {
+                                                    "type": "string",
+                                                    "example": "01001-000"
+                                                },
+                                                "street": {
+                                                    "type": "string",
+                                                    "example": "Rua Exemplo"
+                                                },
+                                                "city": {
+                                                    "type": "string",
+                                                    "example": "Cidade Exemplo"
+                                                },
+                                                "state": {
+                                                    "type": "string",
+                                                    "example": "Estado Exemplo"
+                                                },
+                                                "number": {
+                                                    "type": "integer",
+                                                    "example": 123
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos"
+                    },
+                    "409": {
+                        "description": "CPF ou e-mail já está em uso"
+                    }
+                }
+            }
+        },
+        "/change-password": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Alterar senha do usuário autenticado",
+                "description": "Alterar a senha do usuário autenticado. O usuário deve informar a senha atual e a nova senha.",
+                "operationId": "changePassword",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "current_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "minLength": 8,
+                                        "example": "senha123"
+                                    },
+                                    "new_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "minLength": 8,
+                                        "example": "novaSenha123"
+                                    },
+                                    "new_password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "minLength": 8,
+                                        "example": "novaSenha123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Senha alterada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Senha alterada com sucesso"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos"
+                    },
+                    "401": {
+                        "description": "Senha atual incorreta"
+                    }
+                }
+            }
         }
     },
     "tags": [
         {
+            "name": "Employees",
+            "description": "Employees"
+        },
+        {
             "name": "Points",
             "description": "Points"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
         }
     ]
 }

@@ -2,6 +2,7 @@
 
 namespace Core\Infrastructure\Adapters\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,10 +22,22 @@ class AuthController extends BaseController
         ]);
     }
 
-    public function logout()
+    /**
+     * Renovar o token JWT.
+     */
+    public function refresh(): JsonResponse
     {
-        Auth::guard('api')->logout();
+        try {
+            $newToken = Auth::guard('api')->refresh();
 
-        return response()->json(['message' => 'Logout realizado com sucesso']);
+            return response()->json([
+                'token' => $newToken,
+                'message' => 'Token renovado com sucesso',
+            ], 200);
+        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+            return response()->json(['error' => 'Token inválido'], 401);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Erro ao tentar renovar o token'], 500);
+        }
     }
 }

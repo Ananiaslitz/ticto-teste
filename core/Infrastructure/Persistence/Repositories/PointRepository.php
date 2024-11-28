@@ -62,10 +62,55 @@ class PointRepository extends EloquentBaseRepository implements PointRepositoryI
         return $models->map(fn($model) => $this->mapToEntity($model))->toArray();
     }
 
+    public function findByFilters(
+        int $userId,
+        ?\DateTimeImmutable $startDate = null,
+        ?\DateTimeImmutable $endDate = null
+    ): \Illuminate\Support\Collection
+    {
+        $query = $this->model->where('user_id', $userId);
+
+        if ($startDate) {
+            $query->whereDate('registered_at', '>=', $startDate->format('Y-m-d'));
+        }
+
+        if ($endDate) {
+            $query->whereDate('registered_at', '<=', $endDate->format('Y-m-d'));
+        }
+
+        return $query->get();
+    }
+
     public function delete(int $id): bool
     {
-        return Point::destroy($id) > 0;
+        return $this->model->destroy($id) > 0;
     }
+
+    public function findPointsWithFilters(?\DateTimeImmutable $startDate, ?\DateTimeImmutable $endDate): array
+    {
+        $query = $this->model->query()
+            ->join('users as employees', 'points.user_id', '=', 'employees.id')
+            ->join('users as managers', 'managers.role', '=', \DB::raw('"admin"')) // Relaciona com usuários admins
+            ->select([
+                'points.id as point_id',
+                'employees.name as employee_name',
+                'employees.role as employee_role',
+                \DB::raw('TIMESTAMPDIFF(YEAR, employees.birth_date, CURDATE()) as employee_age'),
+                'managers.name as manager_name',
+                'points.registered_at as point_date',
+            ]);
+
+        if ($startDate) {
+            $query->where('points.registered_at', '>=', $startDate->format('Y-m-d H:i:s'));
+        }
+
+        if ($endDate) {
+            $query->where('points.registered_at', '<=', $endDate->format('Y-m-d H:i:s'));
+        }
+
+        return $query->get()->toArray();
+    }
+
 
     private function mapToEntity(Point $model): PointEntity
     {
@@ -77,5 +122,4 @@ class PointRepository extends EloquentBaseRepository implements PointRepositoryI
             id: $model->id,
         );
     }
-
 }
